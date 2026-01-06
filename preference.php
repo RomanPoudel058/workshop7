@@ -3,23 +3,33 @@ session_start();
 
 if (!isset($_SESSION['logged_in'])) {
     header("Location: login.php");
-    exit();
+    exit;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $theme = $_POST['theme'];
-    setcookie("theme", $theme, time() + 86400 * 30);
+    $value = $_POST['theme'];
+    setcookie('theme', $value, time() + 86400 * 30, "/");
     header("Location: dashboard.php");
-    exit();
+    exit;
 }
+
+$currentTheme = $_COOKIE['theme'] ?? "light";
 ?>
+<!DOCTYPE html>
+<html>
+<head><title>Preference</title></head>
+<body>
 
 <h2>Select Theme</h2>
+
 <form method="post">
     <select name="theme">
-        <option value="light">Light Mode</option>
-        <option value="dark">Dark Mode</option>
+        <option value="light" <?= $currentTheme=="light"?"selected":"" ?>>Light Mode</option>
+        <option value="dark" <?= $currentTheme=="dark"?"selected":"" ?>>Dark Mode</option>
     </select>
     <br><br>
-    <button type="submit">Save Preference</button>
+    <button type="submit">Save</button>
 </form>
+
+</body>
+</html>
